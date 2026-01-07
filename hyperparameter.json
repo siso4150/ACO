@@ -1,0 +1,10 @@
+{
+    "alpha" : 1.0,
+    "beta" :2.5,
+    "rho" : 0.1,
+
+    "startH" : 0,
+    "startW" : 0,
+    "goalH" : 10,
+    "goalW" : 20
+}

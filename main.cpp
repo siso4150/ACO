@@ -1,5 +1,7 @@
-#include <iostream>
+#include "helloworld.h"
+#include "json.hpp"
 
-int main(){
-    std::cout << "動作確認";
+int main() {
+    printHelloWorld();
+    return 0;
 }
