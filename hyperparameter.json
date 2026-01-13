@@ -2,9 +2,16 @@
     "alpha" : 1.0,
     "beta" :2.5,
     "rho" : 0.1,
+    "antNum" : 10,
+    "antGen" : 100,
 
     "startH" : 0,
     "startW" : 0,
     "goalH" : 10,
-    "goalW" : 20
+    "goalW" : 20,
+
+    "maxH" : 100,
+    "maxW" : 100,
+
+    "upperDir" : 8
 }

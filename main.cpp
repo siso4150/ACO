@@ -1,18 +1,12 @@
 #include <iostream>
 #include <fstream>
+
+#include "config.h"
 #include "json.hpp"
 
 using namespace std;
 using json = nlohmann::json;
 
-
-struct Config{
-  
-  double alpha;
-  double beta;
-  double rho;
-
-};
 
 int main() {
     //ハイパーパラメータのロード
@@ -24,9 +18,17 @@ int main() {
     json data = json::parse(f);
 
     //各データを代入
-    config.alpha = data["alpha"];
-    config.beta  = data["beta"];
-    config.rho   = data["rho"];
+    config.alpha = data["alpha"].get<double>();
+    config.beta  = data["beta"].get<double>();
+    config.rho   = data["rho"].get<double>();
+
+    config.startH = data["startH"].get<int>();
+    config.startW = data["startW"].get<int>();
+
+    config.maxH = data["maxH"].get<int>();
+    config.maxW = data["maxW"].get<int>();
+
+    config.upperDir = data["upperDir"].get<int>();
     
     return 0;
 }
