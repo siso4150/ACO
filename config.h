@@ -23,5 +23,8 @@ struct Config{
 
   string mapCsv;//道路のcsv
   string somCsv;//SOMのcsv
+  string centerCsv;//道路中心線のcsv
+
+  double hrsWeight;//ヒューリスティック値の重み
 
 };
