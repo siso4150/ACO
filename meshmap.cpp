@@ -8,9 +8,6 @@
 
 using namespace std;
 
-vector<int> dh = {-1,-1,0,1,1,1,0,-1};
-vector<int> dw = {0,1,1,1,0,-1,-1,-1};
-
 meshmap::meshmap(Config& config):cfg(config){
     
     //mapのサイズ初期化
@@ -21,7 +18,8 @@ meshmap::meshmap(Config& config):cfg(config){
 
     for(int i = 0; i < cfg.maxH; i++){
         for(int j = 0; j < cfg.maxW; j++){
-            map[i][j].pheromone.resize(8,1.0);//各セルのフェロモン値を初期化
+            map[i][j].distPheromone.resize(8,1.0);//各セルの距離フェロモン値を初期化
+            map[i][j].riskPheromone.resize(8,1.0);//各セルのリスクフェロモンを初期化
             map[i][j].heuristic.resize(8,0.0);//各セルのヒューリスティック値を初期化
         }
     }
@@ -135,7 +133,7 @@ void meshmap::initHeuristic(){
                     int movedH = h + dh[i] * d;
                     int movedW = w + dw[i] * d;
 
-                    if(isInsideRoad(movedH,movedW)){
+                    if(isInsideRoad(movedH,movedW) && map[movedH][movedW].isCenter){
                         int difH = abs(movedH - h);
                         int difW = abs(movedW - w);
                         map[h][w].toCenter = min(difH,difW);
@@ -176,11 +174,10 @@ void meshmap::initHeuristic(){
 }
 
 bool meshmap::isInsideRoad(int h, int w){
-    return map[h][w].isCenter && h >= 0 && h < cfg.maxH && w >= 0 && w < cfg.maxW;
+    return  h >= 0 && h < cfg.maxH && w >= 0 && w < cfg.maxW && map[h][w].isRoad;
 }
 
 double meshmap::normalization(double x, double min, double max){
     double res = (x - min) / (max - min);
     return res;
 }
-

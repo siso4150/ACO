@@ -5,7 +5,7 @@
             "name": "C/C++: g++ build and debug with Makefile",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/hello_world",
+            "program": "${workspaceFolder}/aco",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

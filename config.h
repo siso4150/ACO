@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 using namespace std;
@@ -25,6 +27,9 @@ struct Config{
   string somCsv;//SOMのcsv
   string centerCsv;//道路中心線のcsv
 
+  double phrWeight;//フェロモン値の重み
   double hrsWeight;//ヒューリスティック値の重み
+
+  double lowerPhrmn;
 
 };

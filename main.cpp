@@ -3,6 +3,9 @@
 
 #include "config.h"
 #include "json.hpp"
+#include "ant.h"
+#include "colony.h"
+#include "meshmap.h"
 
 using namespace std;
 using json = nlohmann::json;
@@ -29,6 +32,11 @@ int main() {
     config.maxW = data["maxW"].get<int>();
 
     config.upperDir = data["upperDir"].get<int>();
+
+    meshmap meshmap(config);
+    colony colony(config,meshmap);
+    
+    colony.run();
     
     return 0;
 }
