@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <math.h>
+#include <fstream>
 
 #include "config.h"
 #include "cell.h"
@@ -36,6 +37,8 @@ class colony{
         void updatePheromone();
 
         bool isInsideRoad(int,int);
+
+        void resultToCsv();
         
     
 };

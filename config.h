@@ -9,7 +9,6 @@ struct Config{
   double alpha;
   double beta;
   double rho;
-
   int antNum;
   int antGen;
 
@@ -27,9 +26,11 @@ struct Config{
   string somCsv;//SOMのcsv
   string centerCsv;//道路中心線のcsv
 
+  string outputCsv;//結果のcsv
+
   double phrWeight;//フェロモン値の重み
   double hrsWeight;//ヒューリスティック値の重み
 
-  double lowerPhrmn;
+  double lowerPhrmn;//フェロモンの下限
 
 };

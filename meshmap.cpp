@@ -31,6 +31,7 @@ meshmap::meshmap(Config& config):cfg(config){
 
 
     initRoad();//道路かどうかを入力
+    cout << "リスクの初期化" << endl;
     initRisk();//リスク値を入力
     initCenter();//道路中心線を入力
     initHeuristic();//ヒューリスティック値の初期化
@@ -67,7 +68,7 @@ void meshmap::initRisk(){
     ifstream ifs_csv(cfg.somCsv);
 
     if(!ifs_csv.is_open()){
-        cerr << "ファイルがありません" << endl;
+        cerr << cfg.somCsv <<"のファイルがありません" << endl;
         return;
     }
 
@@ -79,12 +80,18 @@ void meshmap::initRisk(){
             continue;
         }
 
-        int h = str_buf[0];
-        int w = str_buf[1];
-        double val = 0;
-        for(int i = 2; i < str_buf.size();i++) val += str_buf[i];
-        map[h][w].riskVal = val;
-        
+        istringstream i_stream(str_buf);
+        int h;
+        int w;
+        int col = 0;
+        double risk = 0;
+        while(getline(i_stream, str_conma_buf,',')){
+            if(col == 0) h = stoi(str_conma_buf);
+            else if(col == 1) w = stoi(str_conma_buf);
+            else risk += stod(str_conma_buf); 
+            col++;
+        }
+        map[h][w].riskVal = risk;
     }
 }
 
@@ -99,18 +106,22 @@ void meshmap::initCenter(){
         return;
     }
 
-    int h = 0;
-    while(getline(ifs_csv,str_buf)){
+     while(getline(ifs_csv,str_buf)){
+    
         istringstream i_stream(str_buf);
-        int w = 0;
+        int h;
+        int w;
+        int col = 0;
         while(getline(i_stream, str_conma_buf,',')){
-            if(str_conma_buf == "1"){
-                map[h][w].isCenter = true;
-            }
-            w++;
+            if(col == 0) h = stoi(str_conma_buf);
+            else if(col == 1) w = stoi(str_conma_buf);
+            col++;
         }
-        h++;
+        map[h][w].isCenter = true;
+
     }
+
+   
 }
 
 void meshmap::initHeuristic(){

@@ -1,7 +1,10 @@
+#include <iostream>
+
 #include "colony.h"
 
+
 colony::colony(Config& config,meshmap& mp):
-        cfg(config),mp(mp),minDist(1e9),minRisk(1e9),Q(1){
+        cfg(config),mp(mp),minDist(1e9),minRisk(1e9),minCost(1e9),Q(1){
     
     initAntColony();
 }
@@ -27,6 +30,7 @@ void colony::updateSolution(){
             }
         }
     }
+    cout << "現在までの最適解 距離:" << minDist << " リスク:" << minRisk << " コスト:" << minCost << endl;
 }
 
 void colony::updatePheromone(){
@@ -39,7 +43,12 @@ void colony::updatePheromone(){
                 int movedW = w + dw[i];
                 if(!(isInsideRoad(movedH,movedW)))continue;
                 double eva = mp(h,w).distPheromone[i] * ((double)1 - cfg.rho);
+                
+                double before = mp(h,w).distPheromone[i];
                 mp(h,w).distPheromone[i] = max(eva,cfg.lowerPhrmn);
+                double after = mp(h,w).distPheromone[i];
+
+
                 double reva = mp(h,w).riskPheromone[i] * ((double)1 - cfg.rho);
                 mp(h,w).distPheromone[i] = max(reva,cfg.lowerPhrmn);
             }
@@ -63,7 +72,9 @@ void colony::updatePheromone(){
 
         for(auto c : ant.get_route()){
             if(c.d == -1)break;//ゴールについたので、処理終わり
+            double before = mp(c.h,c.w).distPheromone[c.d];
             mp(c.h,c.w).distPheromone[c.d] += distAdd;
+            double after = mp(c.h,c.w).distPheromone[c.d];
             mp(c.h,c.w).riskPheromone[c.d] += riskAdd;
         }
     }
@@ -76,12 +87,36 @@ bool colony::isInsideRoad(int h, int w){
 
 void colony::run(){
     for(int iter = 0; iter < cfg.antGen; iter++){
+        cout << iter+1 << "世代目:探索開始" << endl;
 
-        for(auto& ant : antColony)ant.search();
+        int cnt = 0;
+        for(auto& ant : antColony){
+            //cout << cnt+1 << "体目 :";
+            ant.search();
+            //cout << "距離: " << ant.get_dist() << " リスク: " << ant.get_risk() << endl;
+            cnt++;
+        }
 
+        
+        //cout << "世代の更新処理" << endl;
         updateSolution();
         updatePheromone();
-
         for(auto& ant : antColony)ant.resetAnt();
     }
+}
+
+void colony::resultToCsv(){
+    ofstream file(cfg.outputCsv);
+    if (!file.is_open()) {
+        std::cerr << "Error: ファイルを開けませんでした: " << cfg.outputCsv << std::endl;
+        return;
+    }
+
+    file << "h,w" << "\n";
+    
+    for(auto c : bestRoute){
+        file << c.h << "," << c.w << "\n";
+    }
+
+    file.close();
 }
