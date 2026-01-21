@@ -105,8 +105,12 @@ void colony::run(){
     }
 }
 
-void colony::resultToCsv(){
-    ofstream file(cfg.outputCsv);
+void colony::resultToCsv(string cfg_file){
+    cfg_file.erase(cfg_file.size()-4,4);
+    
+    cfg_file = "output_csv/" + cfg_file + "csv";
+    ofstream file(cfg_file);
+    
     if (!file.is_open()) {
         std::cerr << "Error: ファイルを開けませんでした: " << cfg.outputCsv << std::endl;
         return;
@@ -119,4 +123,5 @@ void colony::resultToCsv(){
     }
 
     file.close();
+    cout << cfg_file << "に結果を出力" << endl;
 }

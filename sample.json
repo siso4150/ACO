@@ -1,0 +1,27 @@
+{
+    "alpha" : 1.0,
+    "beta" :2.5,
+    "rho" : 0.9,
+    "antNum" : 5
+    ,
+    "antGen" : 1,
+
+    "startH" : 0,
+    "startW" : 68,
+    "goalH" : 40,
+    "goalW" : 72,
+
+    "maxH" : 100,
+    "maxW" : 100,
+
+    "upperDir" : 8,
+    "mapCsv" : "input_csv/shizuoka_cropped_road.csv",
+    "somCsv" : "input_csv/shizuoka_cropped_sample_som.csv",
+    "centerCsv" :"input_csv/shizuoka_cropped_center.csv",
+
+    "outputCsv" : "output_csv/shizuoka_cropped_result.csv",
+
+    "phrWeight" : 0.5,
+    "hrsWeight" : 0.5,
+    "lowerPhrmn" : 0.1
+}

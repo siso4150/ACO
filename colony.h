@@ -38,7 +38,7 @@ class colony{
 
         bool isInsideRoad(int,int);
 
-        void resultToCsv();
+        void resultToCsv(string cfg_file);
         
     
 };

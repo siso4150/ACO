@@ -11,12 +11,21 @@ using namespace std;
 using json = nlohmann::json;
 
 
-int main() {
+int main(int argc, char* argv[]) {//コマンドラインからjsonの指定
+
     //ハイパーパラメータのロード
     Config config;
+    string config_file = "hyperparameter.json";
 
+    if(argc >= 2){
+        config_file = argv[1];
+    }
     //ファイルの読み込み
-    ifstream f("hyperparameter.json");
+    ifstream f(config_file);
+    if (!f.is_open()) {
+        cerr << "Error: Failed to open " << config_file << endl;
+        return 1;
+    }
     //jsonのパース
     json data = json::parse(f);
 
@@ -59,7 +68,7 @@ int main() {
     colony.run();
 
     cout << "結果を出力" << endl;
-    colony.resultToCsv();
+    colony.resultToCsv(argv[1]);
     
     return 0;
 }
