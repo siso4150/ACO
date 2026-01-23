@@ -43,12 +43,7 @@ void colony::updatePheromone(){
                 int movedW = w + dw[i];
                 if(!(isInsideRoad(movedH,movedW)))continue;
                 double eva = mp(h,w).distPheromone[i] * ((double)1 - cfg.rho);
-                
-                double before = mp(h,w).distPheromone[i];
                 mp(h,w).distPheromone[i] = max(eva,cfg.lowerPhrmn);
-                double after = mp(h,w).distPheromone[i];
-
-
                 double reva = mp(h,w).riskPheromone[i] * ((double)1 - cfg.rho);
                 mp(h,w).distPheromone[i] = max(reva,cfg.lowerPhrmn);
             }
@@ -72,10 +67,13 @@ void colony::updatePheromone(){
 
         for(auto c : ant.get_route()){
             if(c.d == -1)break;//ゴールについたので、処理終わり
-            double before = mp(c.h,c.w).distPheromone[c.d];
+            
             mp(c.h,c.w).distPheromone[c.d] += distAdd;
-            double after = mp(c.h,c.w).distPheromone[c.d];
+            if(mp(c.h,c.w).distPheromone[c.d] >= 100) mp(c.h,c.w).distPheromone[c.d] = 100;
+            
+            
             mp(c.h,c.w).riskPheromone[c.d] += riskAdd;
+            if(mp(c.h,c.w).riskPheromone[c.d] >= 100) mp(c.h,c.w).riskPheromone[c.d] = 100;
         }
     }
 }
@@ -107,12 +105,13 @@ void colony::run(){
 
 void colony::resultToCsv(string cfg_file){
     cfg_file.erase(cfg_file.size()-4,4);
+    cfg_file.erase(0,12);
     
     cfg_file = "output_csv/" + cfg_file + "csv";
     ofstream file(cfg_file);
     
     if (!file.is_open()) {
-        std::cerr << "Error: ファイルを開けませんでした: " << cfg.outputCsv << std::endl;
+        std::cerr << "Error: ファイルを開けませんでした: " << cfg_file << endl;;
         return;
     }
 

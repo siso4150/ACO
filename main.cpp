@@ -11,7 +11,7 @@ using namespace std;
 using json = nlohmann::json;
 
 
-int main(int argc, char* argv[]) {//コマンドラインからjsonの指定
+int main(int argc, char* argv[]) {//コマンドライン引数からjsonの指定
 
     //ハイパーパラメータのロード
     Config config;
@@ -20,12 +20,15 @@ int main(int argc, char* argv[]) {//コマンドラインからjsonの指定
     if(argc >= 2){
         config_file = argv[1];
     }
+
     //ファイルの読み込み
     ifstream f(config_file);
     if (!f.is_open()) {
         cerr << "Error: Failed to open " << config_file << endl;
         return 1;
     }
+
+    cout << config_file << "を読み込み";
     //jsonのパース
     json data = json::parse(f);
 
@@ -56,7 +59,7 @@ int main(int argc, char* argv[]) {//コマンドラインからjsonの指定
     config.hrsWeight = data["hrsWeight"].get<double>();
     config.lowerPhrmn = data["lowerPhrmn"].get<double>();
 
-    cout << "jsonデータ読取、config設定完了" << endl;
+    cout  << "、設定完了" << endl;
 
     
     meshmap meshmap(config);
@@ -64,7 +67,7 @@ int main(int argc, char* argv[]) {//コマンドラインからjsonの指定
     colony colony(config,meshmap);
     cout << "Colony,Antクラスの初期化完了" << endl;
     
-    cout << "ACO初期化終了,実行可能" << endl; 
+    cout << "初期化終了,実行可能" << endl; 
     colony.run();
 
     cout << "結果を出力" << endl;
